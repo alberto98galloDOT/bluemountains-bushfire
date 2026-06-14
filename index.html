@@ -35,8 +35,8 @@
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
         <script src="js/leaflet.photon.js"></script>
-        <script src="data/FireHistoryNPWS_1.js"></script>
-        <script src="data/BushfireRiskIndex_2.js"></script>
+        <script src="data/BushfireRiskIndex_1.js"></script>
+        <script src="data/FireHistoryNPWS_2.js"></script>
         <script src="data/NSWlanduse_3.js"></script>
         <script>
         var highlightLayer;
@@ -46,7 +46,7 @@
         }
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[-33.83576721076507,149.9917973992443],[-33.25353688426031,150.81248135130713]]);
+        }).fitBounds([[-33.9486215266672,150.10055095787726],[-33.3670134458565,150.9217135409181]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/qgis2web/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -126,7 +126,144 @@
                                               {pane: 'pane_hillshadensw_0'});
         bounds_group.addLayer(layer_hillshadensw_0);
         map.addLayer(layer_hillshadensw_0);
-        function pop_FireHistoryNPWS_1(feature, layer) {
+        function pop_BushfireRiskIndex_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(String(feature.properties['fid']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RISK_CLASS</th>\
+                        <td class="visible-with-data" id="RISK_CLASS">' + (feature.properties['RISK_CLASS'] !== null ? autolinker.link(String(feature.properties['RISK_CLASS']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_BushfireRiskIndex_1_0(feature) {
+            switch(String(feature.properties['RISK_CLASS'])) {
+                case 'Very Low':
+                    return {
+                pane: 'pane_BushfireRiskIndex_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(26,150,65,0.5)',
+                interactive: true,
+            }
+                    break;
+                case 'Low':
+                    return {
+                pane: 'pane_BushfireRiskIndex_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(138,204,98,0.5)',
+                interactive: true,
+            }
+                    break;
+                case 'Moderate':
+                    return {
+                pane: 'pane_BushfireRiskIndex_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,223,154,0.5)',
+                interactive: true,
+            }
+                    break;
+                case 'High':
+                    return {
+                pane: 'pane_BushfireRiskIndex_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,175,54,0.5)',
+                interactive: true,
+            }
+                    break;
+                case 'Very High':
+                    return {
+                pane: 'pane_BushfireRiskIndex_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,25,28,0.5)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_BushfireRiskIndex_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.5)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,25,28,0.5)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_BushfireRiskIndex_1');
+        map.getPane('pane_BushfireRiskIndex_1').style.zIndex = 401;
+        map.getPane('pane_BushfireRiskIndex_1').style['mix-blend-mode'] = 'normal';
+        var layer_BushfireRiskIndex_1 = new L.geoJson(json_BushfireRiskIndex_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BushfireRiskIndex_1',
+            layerName: 'layer_BushfireRiskIndex_1',
+            pane: 'pane_BushfireRiskIndex_1',
+            onEachFeature: pop_BushfireRiskIndex_1,
+            style: style_BushfireRiskIndex_1_0,
+        });
+        bounds_group.addLayer(layer_BushfireRiskIndex_1);
+        map.addLayer(layer_BushfireRiskIndex_1);
+        function pop_FireHistoryNPWS_2(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     if (typeof layer.closePopup == 'function') {
@@ -159,10 +296,10 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_FireHistoryNPWS_1_0(feature) {
+        function style_FireHistoryNPWS_2_0(feature) {
             if (feature.properties['fire_year'] >= 1957.000000 && feature.properties['fire_year'] <= 1970.600000 ) {
                 return {
-                pane: 'pane_FireHistoryNPWS_1',
+                pane: 'pane_FireHistoryNPWS_2',
                 opacity: 1,
                 color: 'rgba(255,255,255,0.2917647058823529)',
                 dashArray: '',
@@ -177,7 +314,7 @@
             }
             if (feature.properties['fire_year'] >= 1970.600000 && feature.properties['fire_year'] <= 1984.200000 ) {
                 return {
-                pane: 'pane_FireHistoryNPWS_1',
+                pane: 'pane_FireHistoryNPWS_2',
                 opacity: 1,
                 color: 'rgba(255,255,255,0.2917647058823529)',
                 dashArray: '',
@@ -192,7 +329,7 @@
             }
             if (feature.properties['fire_year'] >= 1984.200000 && feature.properties['fire_year'] <= 1997.800000 ) {
                 return {
-                pane: 'pane_FireHistoryNPWS_1',
+                pane: 'pane_FireHistoryNPWS_2',
                 opacity: 1,
                 color: 'rgba(255,255,255,0.2917647058823529)',
                 dashArray: '',
@@ -207,7 +344,7 @@
             }
             if (feature.properties['fire_year'] >= 1997.800000 && feature.properties['fire_year'] <= 2011.400000 ) {
                 return {
-                pane: 'pane_FireHistoryNPWS_1',
+                pane: 'pane_FireHistoryNPWS_2',
                 opacity: 1,
                 color: 'rgba(255,255,255,0.2917647058823529)',
                 dashArray: '',
@@ -222,7 +359,7 @@
             }
             if (feature.properties['fire_year'] >= 2011.400000 && feature.properties['fire_year'] <= 2025.000000 ) {
                 return {
-                pane: 'pane_FireHistoryNPWS_1',
+                pane: 'pane_FireHistoryNPWS_2',
                 opacity: 1,
                 color: 'rgba(255,255,255,0.2917647058823529)',
                 dashArray: '',
@@ -236,157 +373,20 @@
             }
             }
         }
-        map.createPane('pane_FireHistoryNPWS_1');
-        map.getPane('pane_FireHistoryNPWS_1').style.zIndex = 401;
-        map.getPane('pane_FireHistoryNPWS_1').style['mix-blend-mode'] = 'normal';
-        var layer_FireHistoryNPWS_1 = new L.geoJson(json_FireHistoryNPWS_1, {
+        map.createPane('pane_FireHistoryNPWS_2');
+        map.getPane('pane_FireHistoryNPWS_2').style.zIndex = 402;
+        map.getPane('pane_FireHistoryNPWS_2').style['mix-blend-mode'] = 'normal';
+        var layer_FireHistoryNPWS_2 = new L.geoJson(json_FireHistoryNPWS_2, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_FireHistoryNPWS_1',
-            layerName: 'layer_FireHistoryNPWS_1',
-            pane: 'pane_FireHistoryNPWS_1',
-            onEachFeature: pop_FireHistoryNPWS_1,
-            style: style_FireHistoryNPWS_1_0,
+            dataVar: 'json_FireHistoryNPWS_2',
+            layerName: 'layer_FireHistoryNPWS_2',
+            pane: 'pane_FireHistoryNPWS_2',
+            onEachFeature: pop_FireHistoryNPWS_2,
+            style: style_FireHistoryNPWS_2_0,
         });
-        bounds_group.addLayer(layer_FireHistoryNPWS_1);
-        map.addLayer(layer_FireHistoryNPWS_1);
-        function pop_BushfireRiskIndex_2(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<table>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(String(feature.properties['fid']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">RISK_CLASS</th>\
-                        <td class="visible-with-data" id="RISK_CLASS">' + (feature.properties['RISK_CLASS'] !== null ? autolinker.link(String(feature.properties['RISK_CLASS']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_BushfireRiskIndex_2_0(feature) {
-            switch(String(feature.properties['RISK_CLASS'])) {
-                case 'Very Low':
-                    return {
-                pane: 'pane_BushfireRiskIndex_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(26,150,65,0.5)',
-                interactive: true,
-            }
-                    break;
-                case 'Low':
-                    return {
-                pane: 'pane_BushfireRiskIndex_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(138,204,98,0.5)',
-                interactive: true,
-            }
-                    break;
-                case 'Moderate':
-                    return {
-                pane: 'pane_BushfireRiskIndex_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(254,223,154,0.5)',
-                interactive: true,
-            }
-                    break;
-                case 'High':
-                    return {
-                pane: 'pane_BushfireRiskIndex_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(255,175,54,0.5)',
-                interactive: true,
-            }
-                    break;
-                case 'Very High':
-                    return {
-                pane: 'pane_BushfireRiskIndex_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(215,25,28,0.5)',
-                interactive: true,
-            }
-                    break;
-                default:
-                    return {
-                pane: 'pane_BushfireRiskIndex_2',
-                opacity: 1,
-                color: 'rgba(35,35,35,0.5)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(215,25,28,0.5)',
-                interactive: true,
-            }
-                    break;
-            }
-        }
-        map.createPane('pane_BushfireRiskIndex_2');
-        map.getPane('pane_BushfireRiskIndex_2').style.zIndex = 402;
-        map.getPane('pane_BushfireRiskIndex_2').style['mix-blend-mode'] = 'normal';
-        var layer_BushfireRiskIndex_2 = new L.geoJson(json_BushfireRiskIndex_2, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_BushfireRiskIndex_2',
-            layerName: 'layer_BushfireRiskIndex_2',
-            pane: 'pane_BushfireRiskIndex_2',
-            onEachFeature: pop_BushfireRiskIndex_2,
-            style: style_BushfireRiskIndex_2_0,
-        });
-        bounds_group.addLayer(layer_BushfireRiskIndex_2);
-        map.addLayer(layer_BushfireRiskIndex_2);
+        bounds_group.addLayer(layer_FireHistoryNPWS_2);
+        map.addLayer(layer_FireHistoryNPWS_2);
         function pop_NSWlanduse_3(feature, layer) {
             layer.on({
                 mouseout: function(e) {
@@ -455,8 +455,8 @@
         map.addLayer(layer_NSWlanduse_3);
         var overlaysTree = [
             {label: '<img src="legend/NSWlanduse_3.png" /> NSW land use ', layer: layer_NSWlanduse_3},
-            {label: 'Bushfire Risk Index<br /><table><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_2_VeryLow0.png" /></td><td>Very Low</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_2_Low1.png" /></td><td>Low</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_2_Moderate2.png" /></td><td>Moderate</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_2_High3.png" /></td><td>High</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_2_VeryHigh4.png" /></td><td>Very High</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_2_5.png" /></td><td></td></tr></table>', layer: layer_BushfireRiskIndex_2},
-            {label: 'Fire History (NPWS)<br /><table><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_1_195719710.png" /></td><td>1957 - 1971</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_1_197119841.png" /></td><td>1971 - 1984</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_1_198419982.png" /></td><td>1984 - 1998</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_1_199820113.png" /></td><td>1998 - 2011</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_1_201120254.png" /></td><td>2011 - 2025</td></tr></table>', layer: layer_FireHistoryNPWS_1},
+            {label: 'Fire History (NPWS)<br /><table><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_195719710.png" /></td><td>1957 - 1971</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_197119841.png" /></td><td>1971 - 1984</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_198419982.png" /></td><td>1984 - 1998</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_199820113.png" /></td><td>1998 - 2011</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_201120254.png" /></td><td>2011 - 2025</td></tr></table>', layer: layer_FireHistoryNPWS_2},
+            {label: 'Bushfire Risk Index<br /><table><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_VeryLow0.png" /></td><td>Very Low</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_Low1.png" /></td><td>Low</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_Moderate2.png" /></td><td>Moderate</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_High3.png" /></td><td>High</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_VeryHigh4.png" /></td><td>Very High</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_5.png" /></td><td></td></tr></table>', layer: layer_BushfireRiskIndex_1},
             {label: "hillshade nsw", layer: layer_hillshadensw_0},]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
