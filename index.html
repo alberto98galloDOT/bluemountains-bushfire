@@ -38,7 +38,6 @@
         <script src="data/BushfireRiskIndex_1.js"></script>
         <script src="data/FireHistoryNPWS_2.js"></script>
         <script src="data/NSWlanduse_3.js"></script>
-        <script src="data/Locations_4.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -48,7 +47,12 @@
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
         }).fitBounds([[-33.92549992477128,150.0052605759665],[-33.341810236791844,150.91300819403887]]);
-        var hash = new L.Hash(map);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+}).addTo(map);
+var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/qgis2web/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
         // remove popup's row if "visible-with-data"
@@ -449,66 +453,7 @@
         });
         bounds_group.addLayer(layer_NSWlanduse_3);
         map.addLayer(layer_NSWlanduse_3);
-        function pop_Locations_4(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<table>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['fclass'] !== null ? autolinker.link(String(feature.properties['fclass']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">name</th>\
-                        <td>' + (feature.properties['name'] !== null ? autolinker.link(String(feature.properties['name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_Locations_4_0() {
-            return {
-                pane: 'pane_Locations_4',
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(164,113,88,0.0)',
-                interactive: true,
-            }
-        }
-        map.createPane('pane_Locations_4');
-        map.getPane('pane_Locations_4').style.zIndex = 404;
-        map.getPane('pane_Locations_4').style['mix-blend-mode'] = 'normal';
-        var layer_Locations_4 = new L.geoJson(json_Locations_4, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_Locations_4',
-            layerName: 'layer_Locations_4',
-            pane: 'pane_Locations_4',
-            onEachFeature: pop_Locations_4,
-            style: style_Locations_4_0,
-        });
-        bounds_group.addLayer(layer_Locations_4);
-        map.addLayer(layer_Locations_4);
         var overlaysTree = [
-            {label: '<img src="legend/Locations_4.png" /> Locations', layer: layer_Locations_4},
             {label: '<img src="legend/NSWlanduse_3.png" /> NSW land use ', layer: layer_NSWlanduse_3},
             {label: 'Fire History (NPWS)<br /><table><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_195719710.png" /></td><td>1957 - 1971</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_197119841.png" /></td><td>1971 - 1984</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_198419982.png" /></td><td>1984 - 1998</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_199820113.png" /></td><td>1998 - 2011</td></tr><tr><td style="text-align: center;"><img src="legend/FireHistoryNPWS_2_201120254.png" /></td><td>2011 - 2025</td></tr></table>', layer: layer_FireHistoryNPWS_2},
             {label: 'Bushfire Risk Index<br /><table><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_VeryLow0.png" /></td><td>Very Low</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_Low1.png" /></td><td>Low</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_Moderate2.png" /></td><td>Moderate</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_High3.png" /></td><td>High</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_VeryHigh4.png" /></td><td>Very High</td></tr><tr><td style="text-align: center;"><img src="legend/BushfireRiskIndex_1_5.png" /></td><td></td></tr></table>', layer: layer_BushfireRiskIndex_1},
